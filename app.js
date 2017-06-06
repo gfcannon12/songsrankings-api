@@ -14,7 +14,8 @@ new CronJob('0 9 * * *', function() {
   dailyRankingsRequest();
 }, null, true, 'America/New_York');
 
-let dateAndTime = moment().format('MM-DD-YY hh:mm A');
+let dateAndTime = moment().utcOffset('-0400').format('MM-DD-YY hh:mm A');
+console.log(dateAndTime);
 let date = moment().format('MM-DD-YY');
 
 let Schema = mongoose.Schema;
