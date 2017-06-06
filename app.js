@@ -8,6 +8,8 @@ let request = require('request');
 let moment = require('moment');
 let CronJob = require('cron').CronJob;
 
+console.log('hello gray');
+
 new CronJob('0 9 * * *', function() {
   dailyRankingsRequest();
 }, null, true, 'America/New_York');
