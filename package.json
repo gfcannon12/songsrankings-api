@@ -6,10 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Gray Cannon",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "cors": "^2.8.3",
     "cron": "^1.2.1",
     "express": "^4.15.3",
     "moment": "^2.18.1",

@@ -6,9 +6,9 @@ let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 let request = require('request');
 let moment = require('moment');
-let CronJob = require('cron').CronJob;
 
-console.log('hello gray');
+let CronJob = require('cron').CronJob;
+let cors = require('cors');
 
 new CronJob('0 9 * * *', function() {
   dailyRankingsRequest();
@@ -19,6 +19,7 @@ let date = moment().format('MM-DD-YY');
 
 let Schema = mongoose.Schema;
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -31,7 +32,7 @@ function loopEntries(entryArray) {
         cleanObj.songName = entryArray[i]["im:name"]["label"];
         cleanObj.artist = entryArray[i]["im:artist"]["label"];
         cleanObj.genre = entryArray[i]["category"]["attributes"]["term"];
-        cleanObj.rank = i;
+        cleanObj.rank = i + 1; // Because indexes start at 0
         cleanObj.releaseDate = entryArray[i]["im:releaseDate"]["label"];
         cleanObj.dateAndTime = dateAndTime;
         cleanObj.date = date;
@@ -119,7 +120,18 @@ app.get('/songs', function(req,res,next){
 
 app.get('/songs/:dateParam', function(req,res,next){
     // pass empty object in find to get all, to get specific pass a property like name:'Autumn' to get all puppies named Autumn
-    let allSongs = Song.find({date: req.params.dateParam}, function(err, result){
+    let allSongs = Song.find({date: req.params.dateParam}).sort({rank: 1}).exec(function(err, result){
+        if (err){
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.get('/songs/byname/:songParam', function(req,res,next){
+    // pass empty object in find to get all, to get specific pass a property like name:'Autumn' to get all puppies named Autumn
+    let allSongs = Song.find({songName: req.params.songParam}, function(err, result){
         if (err){
             console.log(err);
         } else {
