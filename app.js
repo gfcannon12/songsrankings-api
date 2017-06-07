@@ -132,7 +132,7 @@ app.get('/songs/:dateParam', function(req,res,next){
 
 app.get('/songs/byname/:songParam', function(req,res,next){
     // pass empty object in find to get all, to get specific pass a property like name:'Autumn' to get all puppies named Autumn
-    let allSongs = Song.find({songName: req.params.songParam}, function(err, result){
+    let allSongs = Song.find({songName: req.params.songParam}).sort({date: 1}).exec(function(err, result){
         if (err){
             console.log(err);
         } else {
