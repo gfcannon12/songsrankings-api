@@ -145,10 +145,6 @@ app.get('/', function(req,res,next){
     res.send('Welcome to the best website in the world');
 });
 
-app.get('/', function(req,res,next){
-    res.send('Welcome to the best website in the world');
-});
-
 app.listen(process.env.PORT || 8080, function() {
     console.log(`The app is listening on port ${process.env.PORT}`);
 });
