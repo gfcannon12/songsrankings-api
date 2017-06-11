@@ -10,7 +10,7 @@ let moment = require('moment');
 let CronJob = require('cron').CronJob;
 let cors = require('cors');
 
-new CronJob('34 9 * * *', function() {
+new CronJob('0 7 * * *', function() {
   dailyRankingsRequest();
 }, null, true, 'America/New_York');
 
@@ -100,7 +100,7 @@ let songsRankingsSchema = new Schema({
 
 let Song = mongoose.model('Song', songsRankingsSchema);
 
-mongoose.connect(process.env.MONGODB_URI, function(err){
+mongoose.connect(MONGODB_URI, function(err){
    if (err){
        console.error(err);
    } else {
@@ -145,6 +145,10 @@ app.get('/', function(req,res,next){
     res.send('Welcome to the best website in the world');
 });
 
-app.listen(process.env.PORT || 5000, function() {
-    console.log('The app is listening on port 5000!');
+app.get('/', function(req,res,next){
+    res.send('Welcome to the best website in the world');
+});
+
+app.listen(process.env.PORT || 8080, function() {
+    console.log(`The app is listening on port ${process.env.PORT}`);
 });
