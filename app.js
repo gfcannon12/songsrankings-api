@@ -100,7 +100,7 @@ let songsRankingsSchema = new Schema({
 
 let Song = mongoose.model('Song', songsRankingsSchema);
 
-mongoose.connect('mongodb://localhost/songsRankings', function(err){
+mongoose.connect(process.env.MONGODB_URI, function(err){
    if (err){
        console.error(err);
    } else {
