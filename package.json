@@ -9,7 +9,7 @@
   },
   "engines":{
     "node":"7.10.1"
-  }},
+  },
   "author": "Gray Cannon",
   "license": "MIT",
   "dependencies": {
