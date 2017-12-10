@@ -166,7 +166,7 @@ app.get('/addSongPlusArtist', function(req,res,next){
         }
     });
 });
-
+// test
 app.listen(8080, function() {
     console.log('The app is listening on port 8080!');
 });

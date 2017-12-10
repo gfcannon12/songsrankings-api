@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
-  "engines":{
-    "node":"7.10.1"
+  "engines": {
+    "node": "7.10.1"
   },
   "author": "Gray Cannon",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "cron": "^1.2.1",
     "express": "^4.15.3",
     "moment": "^2.18.1",
-    "mongoose": "^4.10.2",
+    "mongoose": "^4.13.6",
     "request": "^2.81.0"
   }
 }

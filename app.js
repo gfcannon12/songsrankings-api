@@ -10,11 +10,11 @@ let moment = require('moment');
 let CronJob = require('cron').CronJob;
 let cors = require('cors');
 
-new CronJob('5 0 * * *', function() {
+new CronJob('33 9 * * *', function() {
   dailyRankingsRequest();
 }, null, true, 'America/New_York');
 
-let dateAndTime = moment().utcOffset('-0400').format('MM-DD-YY hh:mm A');
+let dateAndTime = moment().utcOffset('-0500').format('MM-DD-YY hh:mm A');
 console.log(dateAndTime);
 let date = moment().format('MM-DD-YY');
 
@@ -48,8 +48,9 @@ function loopEntries(entryArray) {
 
 function dailyRankingsRequest() {
     request('https://itunes.apple.com/us/rss/topsongs/limit=100/explicit=true/json', function (error, response, body) {
-    console.log('error:', error); // Print the error if one occurred
-    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        if (error) {
+          console.log('error:', error);
+        } else console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     
     let json = JSON.parse(body); // string to object
     let entries = json.feed.entry; // this part should be an array of objects
@@ -100,13 +101,11 @@ let songsRankingsSchema = new Schema({
 
 let Song = mongoose.model('Song', songsRankingsSchema);
 
-mongoose.connect(process.env.MONGODB_URI, function(err){
-   if (err){
-       console.error(err);
-   } else {
-       console.log('connected to songs rankings database');
-   }
+mongoose.connect(process.env.MONGODB_URI, {useMongoClient: true}, (err) => {
+    if (err) { console.log('Error connecting to Mongo', err);
+    } else { console.log('Connected to the songsrankings database'); }
 });
+
 
 app.get('/songs', function(req,res,next){
     // pass empty object in find to get all, to get specific pass a property like name:'Autumn' to get all puppies named Autumn
@@ -146,5 +145,5 @@ app.get('/', function(req,res,next){
 });
 
 app.listen(process.env.PORT || 8080, function() {
-    console.log(`The app is listening on port ${process.env.PORT}`);
+    console.log(`The app is listening on port ${process.env.PORT || 8080}`);
 });
