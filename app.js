@@ -10,7 +10,7 @@ let moment = require('moment');
 let CronJob = require('cron').CronJob;
 let cors = require('cors');
 
-new CronJob('5 8 * * *', function() {
+new CronJob('10 8 * * *', function() {
   dailyRankingsRequest();
 }, null, true, 'America/New_York');
 
