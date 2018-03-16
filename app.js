@@ -14,7 +14,7 @@ new CronJob('5 0 * * *', function() {
   dailyRankingsRequest();
 }, null, true, 'America/New_York');
 
-let dateAndTime = moment().utcOffset('-0500').format('MM-DD-YY hh:mm A');
+let dateAndTime = moment().utcOffset('-0400').format('MM-DD-YY hh:mm A');
 console.log(dateAndTime);
 let date = moment().format('MM-DD-YY');
 
