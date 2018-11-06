@@ -13,12 +13,12 @@
   "author": "Gray Cannon",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.17.2",
-    "cors": "^2.8.3",
-    "cron": "^1.2.1",
-    "express": "^4.15.3",
-    "moment": "^2.18.1",
-    "mongoose": "^4.13.6",
-    "request": "^2.81.0"
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "cron": "^1.5.0",
+    "express": "^4.16.4",
+    "moment-timezone": "0.5.23",
+    "mongoose": "^5.3.9",
+    "request": "^2.88.0"
   }
 }

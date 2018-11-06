@@ -1,24 +1,24 @@
 'use strict';
-let express = require('express');
-let app = express();
-let path = require('path');
-let bodyParser = require('body-parser');
-let mongoose = require('mongoose');
-let request = require('request');
-let moment = require('moment');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const request = require('request');
+const moment = require('moment-timezone');
 
-let CronJob = require('cron').CronJob;
-let cors = require('cors');
+const CronJob = require('cron').CronJob;
+const cors = require('cors');
 
-new CronJob('5 0 * * *', function() {
+new CronJob('5 5 * * *', function() {
   dailyRankingsRequest();
-}, null, true, 'America/New_York');
+}, null, true, 'UTC');
 
-let dateAndTime = moment().utcOffset('-0400').format('MM-DD-YY hh:mm A');
-console.log(dateAndTime);
-let date = moment().format('MM-DD-YY');
+const dateAndTime = moment().utc()
+const dateAndTimeET = dateAndTime.tz('America/New_York');
+console.log('dateAndTimeET', dateAndTimeET.format('MM-DD-YY HH:mm'));
+const date = dateAndTimeET.format('MM-DD-YY');
 
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 function loopEntries(entryArray) {
     for(let i =0;i<entryArray.length;i=i+1){
         // blank "clean" object to add data to
-        let cleanObj = {};
+        const cleanObj = {};
 
         // Add data fields
         cleanObj.songName = entryArray[i]["im:name"]["label"];
@@ -39,7 +39,7 @@ function loopEntries(entryArray) {
         cleanObj.date = date;
         
         // push each clean object to mongoose
-        let SongModel = Song;
+        const SongModel = Song;
         SongModel.create(cleanObj, function(err, result){
             console.log("Updated Song with id of ", result._id);
         });
@@ -52,13 +52,13 @@ function dailyRankingsRequest() {
           console.log('error:', error);
         } else console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     
-    let json = JSON.parse(body); // string to object
-    let entries = json.feed.entry; // this part should be an array of objects
+    const json = JSON.parse(body); // string to object
+    const entries = json.feed.entry; // this part should be an array of objects
     loopEntries(entries);
     });
 }
 
-let songsRankingsSchema = new Schema({
+const songsRankingsSchema = new Schema({
     songName: {
         type: String,
         required: true
@@ -99,9 +99,9 @@ let songsRankingsSchema = new Schema({
     }
 });
 
-let Song = mongoose.model('Song', songsRankingsSchema);
+const Song = mongoose.model('Song', songsRankingsSchema);
 
-mongoose.connect(process.env.MONGODB_URI, {useMongoClient: true}, (err) => {
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, (err) => {
     if (err) { console.log('Error connecting to Mongo', err);
     } else { console.log('Connected to the songsrankings database'); }
 });
@@ -109,7 +109,7 @@ mongoose.connect(process.env.MONGODB_URI, {useMongoClient: true}, (err) => {
 
 app.get('/songs', function(req,res,next){
     // pass empty object in find to get all, to get specific pass a property like name:'Autumn' to get all puppies named Autumn
-    let allSongs = Song.find({}, function(err, result){
+    const allSongs = Song.find({}, function(err, result){
         if (err){
             console.log(err);
         } else {
@@ -120,7 +120,7 @@ app.get('/songs', function(req,res,next){
 
 app.get('/songs/:dateParam', function(req,res,next){
     // pass empty object in find to get all, to get specific pass a property like name:'Autumn' to get all puppies named Autumn
-    let allSongs = Song.find({date: req.params.dateParam}).sort({rank: 1}).exec(function(err, result){
+    const allSongs = Song.find({date: req.params.dateParam}).sort({rank: 1}).exec(function(err, result){
         if (err){
             console.log(err);
         } else {
@@ -131,7 +131,7 @@ app.get('/songs/:dateParam', function(req,res,next){
 
 app.get('/songs/byname/:songParam', function(req,res,next){
     // pass empty object in find to get all, to get specific pass a property like name:'Autumn' to get all puppies named Autumn
-    let allSongs = Song.find({songName: req.params.songParam}).sort({date: 1}).exec(function(err, result){
+    const allSongs = Song.find({songName: req.params.songParam}).sort({date: 1}).exec(function(err, result){
         if (err){
             console.log(err);
         } else {
