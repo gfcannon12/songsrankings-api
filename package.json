@@ -18,7 +18,7 @@
     "cron": "^1.5.0",
     "express": "^4.16.4",
     "moment-timezone": "0.5.23",
-    "mongoose": "^5.3.9",
+    "mongoose": "^5.7.5",
     "request": "^2.88.0"
   }
 }
