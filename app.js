@@ -24,7 +24,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-function loopEntries(entryArray) {
+async function loopEntries(entryArray) {
     for(let i =0;i<entryArray.length;i=i+1){
         // blank "clean" object to add data to
         const cleanObj = {};
@@ -40,9 +40,14 @@ function loopEntries(entryArray) {
         
         // push each clean object to mongoose
         const SongModel = Song;
-        SongModel.create(cleanObj, function(err, result){
-            console.log("Updated Song with id of ", result._id);
-        });
+        try {
+            const entry = await SongModel.create(cleanObj);
+            if (typeof entry.errors !== 'undefined') {
+                console.error(entry.errors);
+            } else console.log(`${entry._doc.songName} saved to database`);
+        } catch(e) {
+            console.error(e);
+        }
     }
 }
 
@@ -105,7 +110,6 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, (err) => {
     if (err) { console.log('Error connecting to Mongo', err);
     } else { console.log('Connected to the songsrankings database'); }
 });
-
 
 app.get('/songs', function(req,res,next){
     // pass empty object in find to get all, to get specific pass a property like name:'Autumn' to get all puppies named Autumn
