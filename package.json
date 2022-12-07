@@ -13,10 +13,10 @@
   "author": "Gray Cannon",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "cron": "^1.5.0",
-    "express": "^4.16.4",
+    "express": "^4.18.2",
     "moment-timezone": "0.5.23",
     "mongoose": "^5.7.5",
     "request": "^2.88.0"
